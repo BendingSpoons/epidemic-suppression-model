@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "epidemics-suppression-model"
+version = "1.0.0"
+description = "An algorithm computing the impact of isolation measures on epidemics"
+readme = "README.md"
+repository = "https://github.com/BendingSpoons/epidemic-suppression-model"
+authors = ["Andrea Maiorana", "Marco Meneghelli"]
+license = "GPL-3.0"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+matplotlib = "^3.3.4"
+scipy = "^1.6.1"
+
+[tool.poetry.dev-dependencies]
+black = "==19.10b0"
+isort = "^5.7.0"
+pytest = "^6.2.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
