@@ -201,17 +201,18 @@ def dependency_on_efficiencies_example():
         Effinfty_values_list.append(Effinfty_values_list_for_scapp)
 
     ssapp_values_array, scapp_values_array = np.meshgrid(ssapp_list, scapp_list)
+    Effinfty_values_array = np.array(Effinfty_values_list)
 
-    fig = plt.figure(figsize=(10, 15))
-    ax = fig.gca(projection="3d")
+    fig = plt.figure(figsize=(6.5, 5))
 
-    ax.plot_surface(
-        ssapp_values_array, scapp_values_array, np.array(Effinfty_values_list),
+    plt.contourf(
+        ssapp_values_array, scapp_values_array, Effinfty_values_array, levels=100
     )
 
-    ax.set_xlabel("s^{s,app}")
-    ax.set_ylabel("s^{c,app}")
-    ax.set_zlabel("Eff_∞")
+    fig.suptitle("Eff_∞")
+    plt.xlabel("s^{s,app}")
+    plt.ylabel("s^{c,app}")
+    plt.colorbar()
 
     plt.show()
 
