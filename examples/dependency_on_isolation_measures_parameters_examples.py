@@ -194,9 +194,7 @@ def dependency_on_efficiencies_example():
             Effinfty = effectiveness(Rinfty, R0)
             Effinfty_values_list_for_scapp.append(Effinfty)
 
-            print(
-                f"s^{{s,app}} = {ssapp}, s^{{c,app}} = {scapp}, Eff_∞ = {round(Effinfty, 2)}"
-            )
+            print(f"s^{{s,app}} = {ssapp}, s^{{c,app}} = {scapp}, Eff_∞ = {round(Effinfty, 2)}")
 
         Effinfty_values_list.append(Effinfty_values_list_for_scapp)
 
@@ -205,9 +203,7 @@ def dependency_on_efficiencies_example():
 
     fig = plt.figure(figsize=(6.5, 5))
 
-    plt.contourf(
-        ssapp_values_array, scapp_values_array, Effinfty_values_array, levels=100
-    )
+    plt.contourf(ssapp_values_array, scapp_values_array, Effinfty_values_array, levels=100)
 
     fig.suptitle("Eff_∞")
     plt.xlabel("s^{s,app}")

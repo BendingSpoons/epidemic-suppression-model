@@ -60,9 +60,7 @@ incubation_sigma = 0.363
 
 
 tauS = generate_discrete_distribution_from_cdf_function(
-    cdf=lambda tau: lognormal_cdf(
-        tau / UNITS_IN_ONE_DAY, incubation_mu, incubation_sigma
-    ),
+    cdf=lambda tau: lognormal_cdf(tau / UNITS_IN_ONE_DAY, incubation_mu, incubation_sigma),
     tau_min=1,
     tau_max=TAU_MAX_IN_UNITS,
 ).normalize()
@@ -71,9 +69,7 @@ tauS = generate_discrete_distribution_from_cdf_function(
 # Data for the "two-components model" (asymptomatic and symptomatic individuals)
 
 p_sym = 0.6  # Fraction of infected individuals who are symptomatic.
-contribution_of_symptomatics_to_R0 = (
-    0.95  # Contributions of symptomatic individuals to R0.
-)
+contribution_of_symptomatics_to_R0 = 0.95  # Contributions of symptomatic individuals to R0.
 
 
 def make_scenario_parameters_for_asymptomatic_symptomatic_model(
@@ -98,9 +94,7 @@ def make_scenario_parameters_for_asymptomatic_symptomatic_model(
         contribution_of_symptomatics_to_R0 / p_sym * R0 if p_sym > 0 else 0
     )
 
-    assert (
-        abs(R0 - p_sym * R0_sym - p_asy * R0_asy) < DISTRIBUTION_NORMALIZATION_TOLERANCE
-    )
+    assert abs(R0 - p_sym * R0_sym - p_asy * R0_asy) < DISTRIBUTION_NORMALIZATION_TOLERANCE
 
     p_gs = (1 - p_sym, p_sym)
 

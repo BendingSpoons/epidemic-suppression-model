@@ -28,9 +28,7 @@ class TestAlgorithmBlock:
         tauT_peak = 10 * UNITS_IN_ONE_DAY
 
         tauT_gs = (
-            DiscreteDistributionOnNonNegatives(
-                pmf_values=[0], tau_min=0, improper=True
-            ),
+            DiscreteDistributionOnNonNegatives(pmf_values=[0], tau_min=0, improper=True),
             DiscreteDistributionOnNonNegatives(pmf_values=[1], tau_min=tauT_peak),
         )
 
@@ -42,13 +40,11 @@ class TestAlgorithmBlock:
         assert R_t_gs[0] == R0_gs[0]
 
         assert all(
-            b_t_gs[1].pmf(tau * UNITS_IN_ONE_DAY)
-            == b0_gs[1].pmf(tau * UNITS_IN_ONE_DAY)
+            b_t_gs[1].pmf(tau * UNITS_IN_ONE_DAY) == b0_gs[1].pmf(tau * UNITS_IN_ONE_DAY)
             for tau in (0, 3, 6, 9)
         )
         assert all(
-            b_t_gs[1].pmf(tau * UNITS_IN_ONE_DAY)
-            == (1 - xi) * b0_gs[1].pmf(tau * UNITS_IN_ONE_DAY)
+            b_t_gs[1].pmf(tau * UNITS_IN_ONE_DAY) == (1 - xi) * b0_gs[1].pmf(tau * UNITS_IN_ONE_DAY)
             for tau in (10, 13, 16, 19)
         )
         assert (1 - xi) * R0_gs[1] <= R_t_gs[1] <= R0_gs[1]
@@ -57,28 +53,20 @@ class TestAlgorithmBlock:
         # No contact tracing without app
         tauAs_peak = 5 * UNITS_IN_ONE_DAY
         tauAs_t_gs = (
-            DiscreteDistributionOnNonNegatives(
-                pmf_values=[0], tau_min=0, improper=True
-            ),
+            DiscreteDistributionOnNonNegatives(pmf_values=[0], tau_min=0, improper=True),
             DiscreteDistributionOnNonNegatives(pmf_values=[1], tau_min=tauAs_peak),
         )
 
         # Uniform distribution from 0 to 6 (excluded),  with total mass 0.6
         tau_Ac_t = DiscreteDistributionOnNonNegatives(
-            pmf_values=[0.1 / UNITS_IN_ONE_DAY] * 6 * UNITS_IN_ONE_DAY,
-            tau_min=0,
-            improper=True,
+            pmf_values=[0.1 / UNITS_IN_ONE_DAY] * 6 * UNITS_IN_ONE_DAY, tau_min=0, improper=True,
         )
         assert floats_match(tau_Ac_t.total_mass, 0.6)
 
         DeltaAT_peak = 2 * UNITS_IN_ONE_DAY
-        DeltaAT = DiscreteDistributionOnNonNegatives(
-            pmf_values=[1], tau_min=DeltaAT_peak
-        )
+        DeltaAT = DiscreteDistributionOnNonNegatives(pmf_values=[1], tau_min=DeltaAT_peak)
 
-        tauT_t_gs = compute_tauT_t(
-            tauAs_t_gs=tauAs_t_gs, tauAc_t=tau_Ac_t, DeltaAT=DeltaAT
-        )
+        tauT_t_gs = compute_tauT_t(tauAs_t_gs=tauAs_t_gs, tauAc_t=tau_Ac_t, DeltaAT=DeltaAT)
 
         # Expected results
         tau_A_gs = (
@@ -108,9 +96,7 @@ class TestAlgorithmBlock:
                     ),
                 )
             ],
-            tausigmags_t=(
-                DiscreteDistributionOnNonNegatives(pmf_values=[1], tau_min=1),
-            ),
+            tausigmags_t=(DiscreteDistributionOnNonNegatives(pmf_values=[1], tau_min=1),),
             xi=lambda t: 0,
             sc_t=sc,
         )
@@ -130,9 +116,7 @@ class TestAlgorithmBlock:
                     ),
                 )
             ],
-            tausigmags_t=(
-                DiscreteDistributionOnNonNegatives(pmf_values=[1], tau_min=1),
-            ),
+            tausigmags_t=(DiscreteDistributionOnNonNegatives(pmf_values=[1], tau_min=1),),
             xi=lambda t: 0,
             sc_t=sc,
         )
@@ -153,9 +137,7 @@ class TestAlgorithmBlock:
                 )
             ]
             * 3,
-            tausigmags_t=(
-                DiscreteDistributionOnNonNegatives(pmf_values=[0.4, 0.6, 0], tau_min=1),
-            ),
+            tausigmags_t=(DiscreteDistributionOnNonNegatives(pmf_values=[0.4, 0.6, 0], tau_min=1),),
             xi=lambda t: 0,
             sc_t=sc,
         )
@@ -179,9 +161,7 @@ class TestAlgorithmBlock:
                 )
             ]
             * 3,
-            tausigmags_t=(
-                DiscreteDistributionOnNonNegatives(pmf_values=[0.4, 0.6, 0], tau_min=1),
-            ),
+            tausigmags_t=(DiscreteDistributionOnNonNegatives(pmf_values=[0.4, 0.6, 0], tau_min=1),),
             xi=lambda t: xi,
             sc_t=sc,
         )
@@ -306,11 +286,7 @@ class TestAlgorithmBlock:
             pmf_values=[0.08 * 0.1 + 0.14 * 0.15, 0.14 * 0.1], tau_min=1, improper=True,
         )
         expectedchecktauT1noapp_4 = DiscreteDistributionOnNonNegatives(
-            pmf_values=[
-                0.12 * 0.15 + 0.23 * 0.25,
-                0.23 * 0.15 + 0.18 * 0.25,
-                0.18 * 0.15,
-            ],
+            pmf_values=[0.12 * 0.15 + 0.23 * 0.25, 0.23 * 0.15 + 0.18 * 0.25, 0.18 * 0.15,],
             tau_min=1,
             improper=True,
         )
@@ -343,8 +319,7 @@ class TestAlgorithmBlock:
         tauAc_t_app, tauAc_t_noapp = compute_tauAc_t_two_components(**kwargs)
 
         assert all(
-            tauAc_t_app.pmf(tau)
-            >= expected_tauAc_t_app.pmf(tau) - FLOAT_TOLERANCE_FOR_EQUALITIES
+            tauAc_t_app.pmf(tau) >= expected_tauAc_t_app.pmf(tau) - FLOAT_TOLERANCE_FOR_EQUALITIES
             for tau in [1, 2, 3]
         )
         assert tauAc_t_app.total_mass > expected_tauAc_t_app.total_mass

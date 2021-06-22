@@ -79,9 +79,7 @@ def compute_tauAc_t(
     :return: the distribution of tauAc_t.
     """
     if t == 0:
-        return DiscreteDistributionOnNonNegatives(
-            pmf_values=[], tau_min=0, improper=True
-        )
+        return DiscreteDistributionOnNonNegatives(pmf_values=[], tau_min=0, improper=True)
 
     gs = range(len(tausigmags_t))
 
@@ -136,9 +134,7 @@ def compute_tauAc_t_two_components(
     gs = range(len(tausigmagsapp_t))
 
     # The improper distribution with CDF rho -> checkFTapp_t(rho) - checkFTapp_t(0)
-    cut_checkFTapp_t = compute_cut_checkF_t(
-        t=t, tauT=tauT_app, xi=xi, measures=tausigmagsapp_t
-    )
+    cut_checkFTapp_t = compute_cut_checkF_t(t=t, tauT=tauT_app, xi=xi, measures=tausigmagsapp_t)
     rho_max_app = max(max(tauT_t[g].tau_max for g in gs) for tauT_t in tauT_app)
     cut_check_tauTapp_t = generate_discrete_distribution_from_cdf_function(
         cdf=cut_checkFTapp_t, tau_min=1, tau_max=rho_max_app

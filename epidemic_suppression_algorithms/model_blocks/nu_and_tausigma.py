@@ -9,9 +9,7 @@ Copyright 2021 Bending Spoons S.p.A.
 from typing import Callable, List, Optional, Sequence, Tuple
 
 from math_utilities.config import DISTRIBUTION_NORMALIZATION_TOLERANCE
-from math_utilities.discrete_distributions_utils import (
-    DiscreteDistributionOnNonNegatives,
-)
+from math_utilities.discrete_distributions_utils import DiscreteDistributionOnNonNegatives
 
 
 def check_b_negative_times(
@@ -188,9 +186,7 @@ def compute_tausigma_and_nu_components_at_time_t_with_app(
                 tau_max_beta_negative = b_negative_times[g].tau_max
                 p_g_a_negative_time = p_gs[g] if a == 1 else 0
                 mga_t_pmf_values += [
-                    p_g_a_negative_time
-                    * nu_negative_times
-                    * b_negative_times[g].pmf(tau)
+                    p_g_a_negative_time * nu_negative_times * b_negative_times[g].pmf(tau)
                     for tau in range(t + 1, tau_max_beta_negative + 1)
                 ]
             mga_t = DiscreteDistributionOnNonNegatives(

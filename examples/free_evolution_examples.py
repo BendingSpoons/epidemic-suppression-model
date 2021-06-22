@@ -11,9 +11,7 @@ from epidemic_suppression_algorithms.free_evolution_algorithm import (
     free_evolution_by_severity,
     free_evolution_global,
 )
-from epidemic_suppression_algorithms.model_blocks.nu_and_tausigma import (
-    check_b_negative_times,
-)
+from epidemic_suppression_algorithms.model_blocks.nu_and_tausigma import check_b_negative_times
 from math_utilities.config import UNITS_IN_ONE_DAY
 from model_utilities.epidemic_data import (
     b0,
@@ -31,9 +29,7 @@ def free_evolution_without_severities_example():
     nu_start = 1000
 
     free_evolution_global(
-        b=[b0_scaled] * t_max_in_days * UNITS_IN_ONE_DAY,
-        nu_start=nu_start,
-        b_negative_times=b0,
+        b=[b0_scaled] * t_max_in_days * UNITS_IN_ONE_DAY, nu_start=nu_start, b_negative_times=b0,
     )
 
 

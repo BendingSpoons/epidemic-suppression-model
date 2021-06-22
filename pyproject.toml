@@ -13,10 +13,32 @@ python = "^3.8"
 matplotlib = "^3.3.4"
 scipy = "^1.6.1"
 
+[tool.black]
+line-length = 100
+exclude = '''
+(
+    \.DS_Store |
+    \.githooks |
+    \.html$ |
+    \.idea |
+    \.json$ |
+    \.pyc$ |
+    \.sql$ |
+    \.vscode |
+    \.venv |
+    node_modules
+)
+'''
+
 [tool.poetry.dev-dependencies]
 black = "==19.10b0"
 isort = "^5.7.0"
 pytest = "^6.2.2"
+
+
+[tool.isort]
+line_length = 100
+profile = "black"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

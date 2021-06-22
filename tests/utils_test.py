@@ -7,9 +7,7 @@ from math_utilities.discrete_distributions_utils import (
 
 class TestDiscreteDistribution:
     def test_basics(self):
-        d = DiscreteDistribution(
-            pmf_values=[0.2, 0.1, 0.4, 0.7, 0, 0], tau_min=3, improper=True
-        )
+        d = DiscreteDistribution(pmf_values=[0.2, 0.1, 0.4, 0.7, 0, 0], tau_min=3, improper=True)
         assert d.tau_min == 3 and d.tau_max == 6
         assert d.support == range(3, 7)
         assert round(d.total_mass, 8) == 1.4
@@ -35,9 +33,7 @@ class TestDiscreteDistribution:
             raise ValueError
         except AssertionError:
             DiscreteDistribution(pmf_values=[0.25, 0.5, 0.25], tau_min=-1)
-            DiscreteDistribution(
-                pmf_values=[0.25, 0.4, 0.25], tau_min=-1, improper=True
-            )
+            DiscreteDistribution(pmf_values=[0.25, 0.4, 0.25], tau_min=-1, improper=True)
 
     def test_convolution(self):
         d1 = DiscreteDistribution(pmf_values=[0.25, 0.5, 0.25], tau_min=-1)
@@ -56,9 +52,7 @@ class TestDiscreteDistribution:
     def test_rescalings(self):
         d1 = DiscreteDistribution(pmf_values=[0.25, 0.5, 0.25], tau_min=-1)
         d2 = DiscreteDistribution(pmf_values=[0.5, 1, 0.5], tau_min=-1, improper=True)
-        d3 = DiscreteDistribution(
-            pmf_values=[-0.25, 0.0, 0.25], tau_min=-1, improper=True
-        )
+        d3 = DiscreteDistribution(pmf_values=[-0.25, 0.0, 0.25], tau_min=-1, improper=True)
 
         assert d1.rescale_by_factor(scale_factor=2) == d2
         assert d2.normalize() == d1
@@ -79,13 +73,8 @@ class TestDiscreteDistribution:
     def test_integration(self):
         d2 = DiscreteDistribution(pmf_values=[0.25, 0.5, 0.25], tau_min=5)
         assert d2.integrate(integrand=lambda tau: 1, tau_min=0, tau_max=10) == 1
-        assert (
-            d2.integrate(integrand=lambda tau: tau, tau_min=0, tau_max=10) == d2.mean()
-        )
-        assert (
-            d2.integrate(integrand=lambda tau: -tau, tau_min=0, tau_max=10)
-            == -d2.mean()
-        )
+        assert d2.integrate(integrand=lambda tau: tau, tau_min=0, tau_max=10) == d2.mean()
+        assert d2.integrate(integrand=lambda tau: -tau, tau_min=0, tau_max=10) == -d2.mean()
 
     def test_linear_combination(self):
         d1 = DiscreteDistributionOnNonNegatives(
@@ -104,8 +93,5 @@ class TestDiscreteDistribution:
         )
 
         linear_combination_discrete_distributions_by_values(
-            scalars=[0.4, 0.6],
-            seq=[d1.normalize(), d2],
-            use_cdfs=False,
-            improper=False,
+            scalars=[0.4, 0.6], seq=[d1.normalize(), d2], use_cdfs=False, improper=False,
         )
