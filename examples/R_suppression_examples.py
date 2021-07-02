@@ -35,9 +35,7 @@ def R_suppression_with_fixed_testing_time():
 
     xi = 1.0  # Probability of (immediate) isolation given positive test
 
-    suppressed_b0 = compute_suppressed_b_t(b0_t_gs=(b0,), tauT_t_gs=(tauT,), xi_t=xi,)[
-        0
-    ]
+    suppressed_b0 = compute_suppressed_b_t(b0_t_gs=(b0,), tauT_t_gs=(tauT,), xi_t=xi,)[0]
     suppressed_R_0 = suppressed_b0.total_mass
 
     print("suppressed R_0 =", suppressed_R_0)
@@ -59,9 +57,7 @@ def R_suppression_due_to_symptoms_only():
         cdf=FT, tau_min=0, tau_max=TAU_MAX_IN_UNITS,
     )
 
-    suppressed_b0 = compute_suppressed_b_t(b0_t_gs=(b0,), tauT_t_gs=(tauT,), xi_t=xi,)[
-        0
-    ]
+    suppressed_b0 = compute_suppressed_b_t(b0_t_gs=(b0,), tauT_t_gs=(tauT,), xi_t=xi,)[0]
     suppressed_R_0 = suppressed_b0.total_mass
 
     print("suppressed R_0 =", suppressed_R_0)

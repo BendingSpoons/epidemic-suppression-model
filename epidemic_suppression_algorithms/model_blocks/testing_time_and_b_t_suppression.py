@@ -60,9 +60,7 @@ def compute_suppressed_b_t(
     """
     b_t = []
     for b0_t_g, tau_T_g in zip(b0_t_gs, tauT_t_gs):
-        b_t_g = b0_t_g.rescale_by_function(
-            scale_function=lambda tau: 1 - xi_t * tau_T_g.cdf(tau)
-        )
+        b_t_g = b0_t_g.rescale_by_function(scale_function=lambda tau: 1 - xi_t * tau_T_g.cdf(tau))
         b_t.append(b_t_g)
 
     return tuple(b_t)

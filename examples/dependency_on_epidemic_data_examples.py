@@ -47,8 +47,7 @@ def dependency_on_share_of_symptomatics_homogeneous_model_example():
 
         # Severities: gs = (asymptomatic, symptomatic)
         p_gs, b0_gs = make_scenario_parameters_for_asymptomatic_symptomatic_model(
-            p_sym=p_sym,
-            contribution_of_symptomatics_to_R0=contribution_of_symptomatics_to_R0,
+            p_sym=p_sym, contribution_of_symptomatics_to_R0=contribution_of_symptomatics_to_R0,
         )
 
         scenario = HomogeneousScenario(
@@ -158,9 +157,7 @@ def dependency_on_contribution_of_symptomatics_homogeneous_model_example():
     plt.ylim(0.13, 0.3)
     plt.ylabel("Eff_∞")
     plt.grid(True)
-    plt.plot(
-        contribution_of_symptomatics_to_R0_list, Effinfty_values_list, color="black",
-    ),
+    plt.plot(contribution_of_symptomatics_to_R0_list, Effinfty_values_list, color="black",),
 
     plt.show()
 
@@ -182,8 +179,7 @@ def dependency_on_generation_time_homogeneous_model_example():
             return (1 / f) * rho0(tau / f)
 
         rescaled_rho0 = generate_discrete_distribution_from_pdf_function(
-            pdf=lambda tau: rescaled_rho0_function(tau * TAU_UNIT_IN_DAYS)
-            * TAU_UNIT_IN_DAYS,
+            pdf=lambda tau: rescaled_rho0_function(tau * TAU_UNIT_IN_DAYS) * TAU_UNIT_IN_DAYS,
             tau_min=1,
             tau_max=TAU_MAX_IN_UNITS,
             normalize=True,
@@ -229,14 +225,10 @@ def dependency_on_generation_time_homogeneous_model_example():
 
     plt.ylim(0, 0.8)
     plt.grid(True)
-    plt.plot(
-        expected_default_generation_times_list, Effinfty_values_list, color="black",
-    ),
+    plt.plot(expected_default_generation_times_list, Effinfty_values_list, color="black",),
     plt.xlabel("E(τ^{0,C})")
     plt.ylabel("Eff_∞")
-    plt.title(
-        "Effectiveness under rescaling of the default generation time distribution"
-    )
+    plt.title("Effectiveness under rescaling of the default generation time distribution")
 
     plt.show()
 

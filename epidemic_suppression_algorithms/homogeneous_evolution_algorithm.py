@@ -14,13 +14,9 @@ from epidemic_suppression_algorithms.model_blocks.testing_time_and_b_t_suppressi
     compute_suppressed_b_t,
     compute_tauT_t,
 )
-from epidemic_suppression_algorithms.model_blocks.time_evolution_block import (
-    compute_tauAc_t,
-)
+from epidemic_suppression_algorithms.model_blocks.time_evolution_block import compute_tauAc_t
 from math_utilities.config import UNITS_IN_ONE_DAY
-from math_utilities.discrete_distributions_utils import (
-    DiscreteDistributionOnNonNegatives,
-)
+from math_utilities.discrete_distributions_utils import DiscreteDistributionOnNonNegatives
 from model_utilities.scenarios import HomogeneousScenario
 
 
@@ -32,12 +28,7 @@ def compute_time_evolution_homogeneous_case(
     verbose: bool = True,
     threshold_to_stop: Optional[float] = None,
 ) -> Tuple[
-    List[int],
-    List[float],
-    List[float],
-    List[float],
-    List[Tuple[float, ...]],
-    List[float],
+    List[int], List[float], List[float], List[float], List[Tuple[float, ...]], List[float],
 ]:
     """
     The main function that implements the algorithm, computing the time evolution in the
@@ -88,9 +79,7 @@ def compute_time_evolution_homogeneous_case(
             nugs_t = tuple(nu_t * p_g for p_g in scenario.p_gs)
             nu0_t = nu_start
             tausigmags_t = tuple(
-                DiscreteDistributionOnNonNegatives(
-                    pmf_values=[], tau_min=0, improper=True
-                )
+                DiscreteDistributionOnNonNegatives(pmf_values=[], tau_min=0, improper=True)
                 for _ in gs
             )
         else:
@@ -118,24 +107,16 @@ def compute_time_evolution_homogeneous_case(
                 break
 
         # Compute tauAs_t components from tauS
-        tauAs_t_gs = tuple(
-            scenario.tauS.rescale_by_factor(scenario.ss[g](t)) for g in gs
-        )
+        tauAs_t_gs = tuple(scenario.tauS.rescale_by_factor(scenario.ss[g](t)) for g in gs)
 
         # Time evolution step:
         # Compute tauAc_t from tausigma_t and tauT_t' (for t' = 0,...,t-1) components
         tauAc_t = compute_tauAc_t(
-            t=t,
-            tauT=tauT,
-            tausigmags_t=tausigmags_t,
-            xi=scenario.xi,
-            sc_t=scenario.sc(t),
+            t=t, tauT=tauT, tausigmags_t=tausigmags_t, xi=scenario.xi, sc_t=scenario.sc(t),
         )
 
         # Compute tauA_t and tauT_t components from tauAs_t, tauAc_t, and DeltaAT
-        tauT_t_gs = compute_tauT_t(
-            tauAs_t_gs=tauAs_t_gs, tauAc_t=tauAc_t, DeltaAT=scenario.DeltaAT
-        )
+        tauT_t_gs = compute_tauT_t(tauAs_t_gs=tauAs_t_gs, tauAc_t=tauAc_t, DeltaAT=scenario.DeltaAT)
 
         # Compute b and R
         b_t_gs = compute_suppressed_b_t(
@@ -144,8 +125,7 @@ def compute_time_evolution_homogeneous_case(
         R_t_gs = tuple(b_t_g.total_mass for b_t_g in b_t_gs)
         R_t = sum(p_g * R_t_g for (p_g, R_t_g) in zip(scenario.p_gs, R_t_gs))
         FT_t_infty = sum(
-            p_g * tauT_t_g.total_mass
-            for (p_g, tauT_t_g) in zip(scenario.p_gs, tauT_t_gs)
+            p_g * tauT_t_g.total_mass for (p_g, tauT_t_g) in zip(scenario.p_gs, tauT_t_gs)
         )
 
         t_in_days_list.append(t_in_days)
@@ -159,9 +139,7 @@ def compute_time_evolution_homogeneous_case(
         FT_infty.append(FT_t_infty)
 
         if verbose and t % UNITS_IN_ONE_DAY == 0:
-            EtauC_t_gs_in_days = [
-                b_t_g.normalize().mean() * UNITS_IN_ONE_DAY for b_t_g in b_t_gs
-            ]
+            EtauC_t_gs_in_days = [b_t_g.normalize().mean() * UNITS_IN_ONE_DAY for b_t_g in b_t_gs]
 
             print(
                 f"""t = {t_in_days} days
@@ -183,8 +161,7 @@ def compute_time_evolution_homogeneous_case(
             and (
                 abs((R[-2] - R[-1]) / R[-2]) < threshold_to_stop
                 and FT_infty[-2] != 0
-                and abs((FT_infty[-2] - FT_infty[-1]) / FT_infty[-2])
-                < threshold_to_stop
+                and abs((FT_infty[-2] - FT_infty[-1]) / FT_infty[-2]) < threshold_to_stop
             )
         ):
             break

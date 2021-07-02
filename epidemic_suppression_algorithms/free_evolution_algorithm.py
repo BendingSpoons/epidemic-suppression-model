@@ -13,9 +13,7 @@ from epidemic_suppression_algorithms.model_blocks.nu_and_tausigma import (
     compute_tausigma_and_nu_components_at_time_t,
 )
 from math_utilities.config import TAU_UNIT_IN_DAYS, UNITS_IN_ONE_DAY
-from math_utilities.discrete_distributions_utils import (
-    DiscreteDistributionOnNonNegatives,
-)
+from math_utilities.discrete_distributions_utils import DiscreteDistributionOnNonNegatives
 
 
 def free_evolution_global(
@@ -36,16 +34,10 @@ def free_evolution_global(
 
         if t == 0 and b_negative_times is None:
             nu_t = nu_start
-            tausigma_t = DiscreteDistributionOnNonNegatives(
-                pmf_values=[], tau_min=0, improper=True
-            )
+            tausigma_t = DiscreteDistributionOnNonNegatives(pmf_values=[], tau_min=0, improper=True)
         else:
             nu_t, tausigma_t = compute_tausigma_and_nu_at_time_t(
-                t=t,
-                b=b,
-                nu=nu,
-                b_negative_times=b_negative_times,
-                nu_negative_times=nu_start,
+                t=t, b=b, nu=nu, b_negative_times=b_negative_times, nu_negative_times=nu_start,
             )
 
         nu.append(nu_t)
@@ -69,9 +61,7 @@ def free_evolution_by_severity(
     p_gs: Tuple[float, ...],
     b_negative_times: Optional[Tuple[DiscreteDistributionOnNonNegatives, ...]] = None,
 ) -> Tuple[
-    List[int],
-    List[Tuple[float, ...]],
-    List[Tuple[DiscreteDistributionOnNonNegatives, ...]],
+    List[int], List[Tuple[float, ...]], List[Tuple[DiscreteDistributionOnNonNegatives, ...]],
 ]:
     nu = []
     R = []
@@ -88,9 +78,7 @@ def free_evolution_by_severity(
         if t == 0 and b_negative_times is None:
             nu_t = nu_start
             tausigmags_t = tuple(
-                DiscreteDistributionOnNonNegatives(
-                    pmf_values=[], tau_min=0, improper=True
-                )
+                DiscreteDistributionOnNonNegatives(pmf_values=[], tau_min=0, improper=True)
                 for _ in gs
             )
             nu_t_gs = None

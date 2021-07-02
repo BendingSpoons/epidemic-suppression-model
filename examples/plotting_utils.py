@@ -10,9 +10,7 @@ from typing import Callable, Optional, Sequence
 import matplotlib.pyplot as plt
 
 from math_utilities.config import UNITS_IN_ONE_DAY
-from math_utilities.discrete_distributions_utils import (
-    DiscreteDistributionOnNonNegatives,
-)
+from math_utilities.discrete_distributions_utils import DiscreteDistributionOnNonNegatives
 from math_utilities.general_utilities import effectiveness
 
 
@@ -35,9 +33,7 @@ def plot_discrete_distributions(
         labels = custom_labels
     for i, d in enumerate(ds):
         values = (
-            [d.cdf(tau) for tau in tau_range]
-            if plot_cdfs
-            else [d.pmf(tau) for tau in tau_range]
+            [d.cdf(tau) for tau in tau_range] if plot_cdfs else [d.pmf(tau) for tau in tau_range]
         )
         plt.plot(
             [x / UNITS_IN_ONE_DAY for x in tau_range], values, label=labels[i],
@@ -106,10 +102,7 @@ def plot_homogeneous_time_evolution(
         t_in_days_sequence, nu_ts, color="black", label="Number of infected",
     )
     nuplot.plot(
-        t_in_days_sequence,
-        nu0_ts,
-        color="gray",
-        label="Number of infected without measures",
+        t_in_days_sequence, nu0_ts, color="gray", label="Number of infected without measures",
     )
 
     nuplot.legend()
@@ -183,16 +176,10 @@ def plot_time_evolution_with_app(
         label="Prob. infected has the app",
     )
     Pplot.plot(
-        t_in_days_sequence,
-        Fsigmaapp_infty,
-        color="red",
-        label="Prob. infector has the app",
+        t_in_days_sequence, Fsigmaapp_infty, color="red", label="Prob. infector has the app",
     )
     Pplot.plot(
-        t_in_days_sequence,
-        FT_ts_infty,
-        color="black",
-        label="Prob. that infected tests positive",
+        t_in_days_sequence, FT_ts_infty, color="black", label="Prob. that infected tests positive",
     )
     Pplot.plot(
         t_in_days_sequence,

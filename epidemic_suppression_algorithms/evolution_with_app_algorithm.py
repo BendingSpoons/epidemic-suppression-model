@@ -19,9 +19,7 @@ from epidemic_suppression_algorithms.model_blocks.time_evolution_block import (
     compute_tauAc_t_two_components,
 )
 from math_utilities.config import UNITS_IN_ONE_DAY
-from math_utilities.discrete_distributions_utils import (
-    DiscreteDistributionOnNonNegatives,
-)
+from math_utilities.discrete_distributions_utils import DiscreteDistributionOnNonNegatives
 from model_utilities.scenarios import ScenarioWithApp
 
 
@@ -101,9 +99,7 @@ def compute_time_evolution_with_app(
         t_in_days = t / UNITS_IN_ONE_DAY
 
         pgs_t_app = tuple(p_g * scenario.epsilon_app(t) for p_g in scenario.p_gs)
-        pgs_t_noapp = tuple(
-            p_g * (1 - scenario.epsilon_app(t)) for p_g in scenario.p_gs
-        )
+        pgs_t_noapp = tuple(p_g * (1 - scenario.epsilon_app(t)) for p_g in scenario.p_gs)
 
         # Compute tausigma_t and nu_t from nu_t' and b_t' for t' = 0,...,t-1
         if t == 0 and b_negative_times is None:
@@ -112,9 +108,7 @@ def compute_time_evolution_with_app(
             nugsnoapp_t = tuple(nu_start * p_g for p_g in pgs_t_noapp)
             nu0_t = nu_start
             tausigmagsapp_t = tausigmagsnoapp_t = tuple(
-                DiscreteDistributionOnNonNegatives(
-                    pmf_values=[], tau_min=0, improper=True
-                )
+                DiscreteDistributionOnNonNegatives(pmf_values=[], tau_min=0, improper=True)
                 for _ in gs
             )
         else:
@@ -144,9 +138,7 @@ def compute_time_evolution_with_app(
             )
             nu0_t = sum(nu0_t_gs)  # People infected at t without isolation measures
         # Prob. that infector had the app
-        Fsigmaapp_t_infty = sum(
-            tausigmag_t.total_mass for tausigmag_t in tausigmagsapp_t
-        )
+        Fsigmaapp_t_infty = sum(tausigmag_t.total_mass for tausigmag_t in tausigmagsapp_t)
         nuapp_t = sum(nugsapp_t)
         nunoapp_t = sum(nugsnoapp_t)
 
@@ -156,9 +148,7 @@ def compute_time_evolution_with_app(
             break
 
         # Compute tauAs_t components from tauS
-        tauAs_t_gs_app = tuple(
-            scenario.tauS.rescale_by_factor(scenario.ssapp[g](t)) for g in gs
-        )
+        tauAs_t_gs_app = tuple(scenario.tauS.rescale_by_factor(scenario.ssapp[g](t)) for g in gs)
         tauAs_t_gs_noapp = tuple(
             scenario.tauS.rescale_by_factor(scenario.ssnoapp[g](t)) for g in gs
         )
@@ -181,9 +171,7 @@ def compute_time_evolution_with_app(
             tauAs_t_gs=tauAs_t_gs_app, tauAc_t=tauAc_t_app, DeltaAT=scenario.DeltaATapp
         )
         tauT_t_gs_noapp = compute_tauT_t(
-            tauAs_t_gs=tauAs_t_gs_noapp,
-            tauAc_t=tauAc_t_noapp,
-            DeltaAT=scenario.DeltaATnoapp,
+            tauAs_t_gs=tauAs_t_gs_noapp, tauAc_t=tauAc_t_noapp, DeltaAT=scenario.DeltaATnoapp,
         )
 
         # Compute b and R
@@ -196,13 +184,8 @@ def compute_time_evolution_with_app(
         R_t_gs_app = tuple(b_t_g.total_mass for b_t_g in b_t_gs_app)
         R_t_gs_noapp = tuple(b_t_g.total_mass for b_t_g in b_t_gs_noapp)
         R_t_app = sum(p_g * R_t_g for (p_g, R_t_g) in zip(scenario.p_gs, R_t_gs_app))
-        R_t_noapp = sum(
-            p_g * R_t_g for (p_g, R_t_g) in zip(scenario.p_gs, R_t_gs_noapp)
-        )
-        R_t = (
-            scenario.epsilon_app(t) * R_t_app
-            + (1 - scenario.epsilon_app(t)) * R_t_noapp
-        )
+        R_t_noapp = sum(p_g * R_t_g for (p_g, R_t_g) in zip(scenario.p_gs, R_t_gs_noapp))
+        R_t = scenario.epsilon_app(t) * R_t_app + (1 - scenario.epsilon_app(t)) * R_t_noapp
         FT_t_app_infty = sum(
             p_g * tauT_t_g_app.total_mass
             for (p_g, tauT_t_g_app, tauT_t_g_noapp) in zip(
@@ -276,8 +259,7 @@ def compute_time_evolution_with_app(
             and (
                 abs((R[-2] - R[-1]) / R[-2]) < threshold_to_stop
                 and FT_infty[-2] != 0
-                and abs((FT_infty[-2] - FT_infty[-1]) / FT_infty[-2])
-                < threshold_to_stop
+                and abs((FT_infty[-2] - FT_infty[-1]) / FT_infty[-2]) < threshold_to_stop
             )
         ):
             break

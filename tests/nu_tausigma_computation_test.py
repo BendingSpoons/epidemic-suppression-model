@@ -4,31 +4,21 @@ from epidemic_suppression_algorithms.model_blocks.nu_and_tausigma import (
     compute_tausigma_and_nu_components_at_time_t,
     compute_tausigma_and_nu_components_at_time_t_with_app,
 )
-from math_utilities.discrete_distributions_utils import (
-    DiscreteDistributionOnNonNegatives,
-)
+from math_utilities.discrete_distributions_utils import DiscreteDistributionOnNonNegatives
 from math_utilities.general_utilities import float_sequences_match, floats_match
 
 
 class TestNuTausigmaComputation:
     def test_tausigma_nu_computation_one_severity_no_negative_times(self):
         b = [
-            DiscreteDistributionOnNonNegatives(
-                pmf_values=[1.5, 2, 1], tau_min=1, improper=True
-            ),
-            DiscreteDistributionOnNonNegatives(
-                pmf_values=[1.5, 2.5, 1], tau_min=1, improper=True
-            ),
-            DiscreteDistributionOnNonNegatives(
-                pmf_values=[1, 1.4, 0.9], tau_min=1, improper=True
-            ),
+            DiscreteDistributionOnNonNegatives(pmf_values=[1.5, 2, 1], tau_min=1, improper=True),
+            DiscreteDistributionOnNonNegatives(pmf_values=[1.5, 2.5, 1], tau_min=1, improper=True),
+            DiscreteDistributionOnNonNegatives(pmf_values=[1, 1.4, 0.9], tau_min=1, improper=True),
         ]
 
         nu_1, tausigma_1 = compute_tausigma_and_nu_at_time_t(t=1, b=b, nu=[10],)
         assert nu_1 == 15
-        assert tausigma_1 == DiscreteDistributionOnNonNegatives(
-            pmf_values=[1], tau_min=1
-        )
+        assert tausigma_1 == DiscreteDistributionOnNonNegatives(pmf_values=[1], tau_min=1)
 
         nu_2, tausigma_2 = compute_tausigma_and_nu_at_time_t(t=2, b=b, nu=[10, 15],)
         assert nu_2 == 10 * 2 + 15 * 1.5 == 42.5
@@ -39,9 +29,7 @@ class TestNuTausigmaComputation:
             ).normalize()
         )
 
-        nu_3, tausigma_3 = compute_tausigma_and_nu_at_time_t(
-            t=3, b=b, nu=[10, 15, 42.5],
-        )
+        nu_3, tausigma_3 = compute_tausigma_and_nu_at_time_t(t=3, b=b, nu=[10, 15, 42.5],)
         assert nu_3 == 10 * 1 + 15 * 2.5 + 42.5 * 1 == 90
         assert (
             tausigma_3
@@ -101,15 +89,9 @@ class TestNuTausigmaComputation:
 
     def test_tausigma_nu_computation_one_severity_with_negative_times(self):
         b = [
-            DiscreteDistributionOnNonNegatives(
-                pmf_values=[1.5, 2, 1], tau_min=1, improper=True
-            ),
-            DiscreteDistributionOnNonNegatives(
-                pmf_values=[1.5, 2.5, 1], tau_min=1, improper=True
-            ),
-            DiscreteDistributionOnNonNegatives(
-                pmf_values=[1, 1.4, 0.9], tau_min=1, improper=True
-            ),
+            DiscreteDistributionOnNonNegatives(pmf_values=[1.5, 2, 1], tau_min=1, improper=True),
+            DiscreteDistributionOnNonNegatives(pmf_values=[1.5, 2.5, 1], tau_min=1, improper=True),
+            DiscreteDistributionOnNonNegatives(pmf_values=[1, 1.4, 0.9], tau_min=1, improper=True),
         ]
 
         b_negative_times = DiscreteDistributionOnNonNegatives(
@@ -119,11 +101,7 @@ class TestNuTausigmaComputation:
         nu_0 = 10
 
         nu_1, tausigma_1 = compute_tausigma_and_nu_at_time_t(
-            t=1,
-            b=b,
-            nu=[nu_0],
-            b_negative_times=b_negative_times,
-            nu_negative_times=nu_0,
+            t=1, b=b, nu=[nu_0], b_negative_times=b_negative_times, nu_negative_times=nu_0,
         )
         assert nu_1 == (0.3 + 0.4 + 1.5) * 10 == 22
         assert (
@@ -134,11 +112,7 @@ class TestNuTausigmaComputation:
         )
 
         nu_2, tausigma_2 = compute_tausigma_and_nu_at_time_t(
-            t=2,
-            b=b,
-            nu=[nu_0, nu_1],
-            b_negative_times=b_negative_times,
-            nu_negative_times=nu_0,
+            t=2, b=b, nu=[nu_0, nu_1], b_negative_times=b_negative_times, nu_negative_times=nu_0,
         )
         assert nu_2 == 10 * 0.3 + 10 * 2 + 22 * 1.5 == 56
         assert (
@@ -318,16 +292,11 @@ class TestNuTausigmaComputation:
         expected_nu1noapp_1 = sum(expected_nu1noapp_1_addends)
 
         expected_nu_1 = (
-            expected_nu0app_1
-            + expected_nu0noapp_1
-            + expected_nu1app_1
-            + expected_nu1noapp_1
+            expected_nu0app_1 + expected_nu0noapp_1 + expected_nu1app_1 + expected_nu1noapp_1
         )
 
         assert float_sequences_match(nugsapp_1, (expected_nu0app_1, expected_nu1app_1))
-        assert float_sequences_match(
-            nugsnoapp_1, (expected_nu0noapp_1, expected_nu1noapp_1)
-        )
+        assert float_sequences_match(nugsnoapp_1, (expected_nu0noapp_1, expected_nu1noapp_1))
         assert tausigmagsapp_1[0] == DiscreteDistributionOnNonNegatives(
             pmf_values=expected_nu0app_1_addends, tau_min=1, improper=True
         ).rescale_by_factor(scale_factor=1 / expected_nu_1)

@@ -128,15 +128,12 @@ class DiscreteDistribution:
         return self._mean_via_pmf()
 
     def _mean_via_pmf(self) -> float:
-        return sum(
-            tau * self._pmf_support_values[tau - self.tau_min] for tau in self.support
-        )
+        return sum(tau * self._pmf_support_values[tau - self.tau_min] for tau in self.support)
 
     def _mean_via_cdf(self) -> float:
         assert self.tau_min >= 0
         return self.tau_min * self.total_mass + sum(
-            self.total_mass - self._cdf_support_values[tau - self.tau_min]
-            for tau in self.support
+            self.total_mass - self._cdf_support_values[tau - self.tau_min] for tau in self.support
         )
 
     def _compute_pmf_values(self) -> None:
@@ -176,25 +173,18 @@ class DiscreteDistribution:
                 cdf_values=rescaled_cdf_values, tau_min=self.tau_min, improper=True
             )
 
-    def rescale_by_function(
-        self, scale_function: FunctionOfTimeUnit
-    ) -> "DiscreteDistribution":
+    def rescale_by_function(self, scale_function: FunctionOfTimeUnit) -> "DiscreteDistribution":
         self._compute_pmf_values()
         rescaled_pmf_values = [
-            scale_function(self.tau_min + i) * v
-            for i, v in enumerate(self._pmf_support_values)
+            scale_function(self.tau_min + i) * v for i, v in enumerate(self._pmf_support_values)
         ]
-        return self.__class__(
-            pmf_values=rescaled_pmf_values, tau_min=self.tau_min, improper=True
-        )
+        return self.__class__(pmf_values=rescaled_pmf_values, tau_min=self.tau_min, improper=True)
 
     def normalize(self) -> "DiscreteDistribution":
         self._compute_cdf_values()
         total_mass = self.total_mass
         rescaled_cdf_values = [v / total_mass for v in self._cdf_support_values]
-        return self.__class__(
-            cdf_values=rescaled_cdf_values, tau_min=self.tau_min, improper=False
-        )
+        return self.__class__(cdf_values=rescaled_cdf_values, tau_min=self.tau_min, improper=False)
 
     def convolve(self, other: "DiscreteDistribution") -> "DiscreteDistribution":
         self._compute_pmf_values()
@@ -215,9 +205,7 @@ class DiscreteDistribution:
         return self.__class__(
             pmf_values=[
                 convolution(tau)
-                for tau in range(
-                    self.tau_min + other.tau_min, self.tau_max + other.tau_max + 1
-                )
+                for tau in range(self.tau_min + other.tau_min, self.tau_max + other.tau_max + 1)
             ],
             tau_min=self.tau_min + other.tau_min,
             improper=improper,
@@ -231,9 +219,7 @@ class DiscreteDistribution:
     ):
         tau_min = tau_min or self.tau_min
         tau_max = tau_max or self.tau_max
-        return sum(
-            integrand(tau) * self.pmf(tau) for tau in range(tau_min, tau_max + 1)
-        )
+        return sum(integrand(tau) * self.pmf(tau) for tau in range(tau_min, tau_max + 1))
 
     def __eq__(self, other: "DiscreteDistribution"):
         if self._pmf_support_values is not None:
@@ -247,11 +233,7 @@ class DiscreteDistribution:
                 self._cdf_support_values, other._cdf_support_values,
             )
 
-        return (
-            self.tau_min == other.tau_min
-            and self.tau_max == other.tau_max
-            and values_match
-        )
+        return self.tau_min == other.tau_min and self.tau_max == other.tau_max and values_match
 
     def __add__(self, other: Union[int, "DiscreteDistribution"]):
         if isinstance(other, int):
@@ -296,10 +278,7 @@ class DiscreteDistributionOnNonNegatives(DiscreteDistribution):
             elif cdf_values is not None:
                 cdf_values = cdf_values[:max_input_length]
         super().__init__(
-            tau_min=tau_min,
-            pmf_values=pmf_values,
-            cdf_values=cdf_values,
-            improper=improper,
+            tau_min=tau_min, pmf_values=pmf_values, cdf_values=cdf_values, improper=improper,
         )
         if truncate_at_tau_max is not None:
             assert self.tau_max <= truncate_at_tau_max
@@ -364,9 +343,7 @@ def linear_combination_discrete_distributions_by_values(
         for tau in range(tau_min, tau_max + 1):
             total_cdf_tau = sum(scalars[i] * seq[i].cdf(tau) for i in range(l))
             total_cdf.append(total_cdf_tau)
-        return seq[0].__class__(
-            cdf_values=total_cdf, tau_min=tau_min, improper=improper
-        )
+        return seq[0].__class__(cdf_values=total_cdf, tau_min=tau_min, improper=improper)
     total_pmf = []
     for tau in range(tau_min, tau_max + 1):
         total_pmf_tau = sum(scalars[i] * seq[i].pmf(tau) for i in range(l))
