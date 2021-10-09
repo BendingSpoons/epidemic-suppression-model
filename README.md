@@ -9,8 +9,10 @@ isolate infected individuals, possibly with the help of a mobile app.
 The output of the algorithm is the time evolution
 of the relative suppression of the effective reproduction number due to these measures.
 
-The model is described in the paper *Effectiveness of isolation measures with app support to contain 
-COVID-19 epidemics: a parametric approach* ([arXiv preprint](https://arxiv.org/abs/2011.02349)).
+The model is described in the paper Maiorana, A., Meneghelli, M. & Resnati, M. 
+Effectiveness of isolation measures with app support to contain COVID-19 epidemics: a parametric approach. 
+*J. Math. Biol.* **83,** 46 (2021). https://doi.org/10.1007/s00285-021-01660-9
+([arXiv preprint](https://arxiv.org/abs/2011.02349)).
 
 In section 4 of the paper we described the application of the model to the COVID-19 
 epidemic, and we reported the results of some computations that were made running the 
